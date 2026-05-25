@@ -11,6 +11,10 @@ hypr/
   keybinds.lua          # Keybinds module
   window_rules.lua      # Window rules module
   layer_rules.lua       # Layer rules module
+nwg-hello/
+  hyprland.conf         # Hyprland session config for the greeter
+  nwg-hello.json        # Greeter config (sessions, themes, avatar, etc.)
+  nwg-hello.css         # Greeter stylesheet
 swaync/
   hyprland.json         # Swaync config (legacy, not used)
   hyprland-1.css        # Swaync styles (legacy, not used)
@@ -23,6 +27,7 @@ scripts/
 | Component | Role |
 |---|---|
 | **Hyprland** (0.55+ git) | Wayland compositor, Lua config |
+| **nwg-hello** | GTK3 login manager / greeter (greetd) |
 | **vibepanel** | Top panel (clock, system tray, etc.) |
 | **nwg-dock-hyprland** | Bottom dock, overlay positioning |
 | **nwg-drawer** | App drawer / launcher (Super key) |
@@ -30,7 +35,7 @@ scripts/
 | **cliphist** + **clipboard-tray** | Clipboard manager with tray icon |
 | **wlsunset** | Blue light filter (4500K–6500K) |
 
-All three nwg-* tools run standalone — no nwg-shell session or dependencies required.
+All nwg-* tools run standalone — no nwg-shell session or dependencies required.
 
 ## Install
 
@@ -41,11 +46,16 @@ cp -r hypr/* ~/.config/hypr/
 # Clipboard tray
 cp scripts/clipboard-tray ~/.local/bin/
 chmod +x ~/.local/bin/clipboard-tray
+
+# nwg-hello greeter config (requires root)
+sudo cp -r nwg-hello/* /etc/nwg-hello/
 ```
 
 ## Requirements
 
 - **Hyprland** 0.55+ (AUR `hyprland-git`)
+- **greetd** — login daemon
+- **nwg-hello** — GTK3 greeter for greetd
 - **vibepanel** — panel
 - **nwg-dock-hyprland** — dock
 - **nwg-drawer** — app drawer / launcher
@@ -60,6 +70,76 @@ chmod +x ~/.local/bin/clipboard-tray
 - **nautilus** — file manager
 - **gtklock** — screen lock
 - **hyprshutdown** — shutdown menu (optional, falls back to `hyprctl dispatch exit`)
+
+---
+
+## Login Manager (nwg-hello)
+
+nwg-hello is a GTK3-based greeter for greetd. It handles the login screen before your Hyprland session starts.
+
+### How it works
+
+1. greetd runs nwg-hello as the greeter on VT1
+2. nwg-hello launches a minimal Hyprland session (`/etc/nwg-hello/hyprland.conf`)
+3. On successful login, nwg-hello execs your real session and Hyprland exits
+
+### Initial setup
+
+```bash
+# 1. Install greetd and nwg-hello
+#    (AUR: greetd, nwg-hello)
+
+# 2. Copy config files
+sudo cp -r nwg-hello/* /etc/nwg-hello/
+
+# 3. Configure greetd to use nwg-hello
+sudo tee /etc/greetd/config.toml << 'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "/usr/bin/start-hyprland -- -c /etc/nwg-hello/hyprland.conf"
+user = "greeter"
+EOF
+
+# 4. Enable greetd
+sudo systemctl enable greetd.service
+```
+
+> **Tip:** During greetd package upgrades, `config.toml` may be overwritten. To avoid this, copy it to `greetd.conf` instead — greetd looks for that file first:
+> ```bash
+> sudo cp /etc/greetd/config.toml /etc/greetd/greetd.conf
+> ```
+
+### nwg-hello.json
+
+Key configuration values:
+
+| Key | Description |
+|---|---|
+| `session_dirs` | Paths to session files (default: wayland-sessions + xsessions) |
+| `custom_sessions` | Add custom sessions (e.g. Shell → `/usr/bin/bash`) |
+| `gtk-theme` | GTK theme for the greeter |
+| `prefer-dark-theme` | Use dark variant of the theme |
+| `time-format` | Clock format (strftime) |
+| `date-format` | Date format (strftime) |
+| `avatar-show` | Display user profile picture |
+| `avatar-circle` | Draw avatar as a circle |
+| `env-vars` | Environment variables to pass to the session |
+
+### nwg-hello.css
+
+Copy the default stylesheet and customize:
+
+```bash
+sudo cp /etc/nwg-hello/nwg-hello-default.css /etc/nwg-hello/nwg-hello.css
+```
+
+Edit `/etc/nwg-hello/nwg-hello.css` to change colors, fonts, background, etc.
+
+### User avatars
+
+Avatars are loaded from `/var/lib/AccountsService/icons/$USERNAME`. Use **gnome-control-center** or **mugshot** to set your profile picture.
 
 ---
 
@@ -100,14 +180,14 @@ chmod +x ~/.local/bin/clipboard-tray
 
 | Keybind | Action |
 |---|---|
-| `ALT + Tab` | Cycle focus to the **next** window (also brings it to top) |
-| `ALT + SHIFT + Tab` | Cycle focus to the **previous** window |
+| `ALT + Tab` | Cycle focus to the **next** window (also brings it to top, scrolls view to it) |
+| `ALT + SHIFT + Tab` | Cycle focus to the **previous** window (scrolls view to it) |
 
 ### Scrolling Layout Navigation
 
 The layout is set to **scrolling** — windows are arranged in columns on an infinitely growing horizontal strip. Think of it as a familiar Alt+Tab window switcher, but the windows stay where you put them and you pan across them horizontally. This is the core philosophy: windows don't resize or tile themselves unexpectedly, they just sit in columns the way you'd arrange them on a wide virtual desktop.
 
-**How it works:** `follow_focus` is **off** by default. The view stays where you left it — focusing a window with Alt+Tab or arrow keys moves focus but doesn't yank the camera around. Alt+Tab scrolls the view to the newly focused window so you always see what you switched to, but moving focus with Left/Right keeps the view put. Press `ALT + I` to toggle follow-focus on if you prefer the view to always track the focused window.
+**How it works:** `follow_focus` is **off** by default. The view stays where you left it — focusing a window with arrow keys moves focus but doesn't yank the camera around. Alt+Tab scrolls the view to the newly focused window so you always see what you switched to. Press `ALT + I` to toggle follow-focus on if you prefer the view to always track the focused window.
 
 #### Focus & Navigation
 
