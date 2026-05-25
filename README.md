@@ -107,12 +107,14 @@ chmod +x ~/.local/bin/clipboard-tray
 
 The layout is set to **scrolling** — windows are arranged in columns on an infinitely growing horizontal strip. These keybinds let you navigate and manipulate columns.
 
+**Default behavior:** `follow_focus` is **off** — focusing a window (via Alt+Tab, Alt+Left/Right, etc.) does NOT auto-scroll the view. This keeps Alt+Tab and other focus workflows stable. Press `ALT + I` to toggle follow-focus on when you want the view to track the focused window.
+
 #### Focus & Navigation
 
 | Keybind | Action |
 |---|---|
-| `ALT + Left` | Move focus to the column on the **left**. The view scrolls to center it. Wraps around at the edges. |
-| `ALT + Right` | Move focus to the column on the **right**. The view scrolls to center it. Wraps around at the edges. |
+| `ALT + Left` | Move focus to the column on the **left**. Wraps around at the edges. View does NOT auto-scroll by default. |
+| `ALT + Right` | Move focus to the column on the **right**. Wraps around at the edges. View does NOT auto-scroll by default. |
 | `ALT + ,` (comma) | **Scroll the view left** by one column (shifts the visible area without changing focus). |
 | `ALT + .` (period) | **Scroll the view right** by one column (shifts the visible area without changing focus). |
 
@@ -147,7 +149,7 @@ The layout is set to **scrolling** — windows are arranged in columns on an inf
 |---|---|
 | `ALT + Home` | **Fit active** — scroll the view so the focused window's column is fully visible and centered. |
 | `ALT + End` | **Fit visible** — scroll the view to show as many columns as possible on screen. |
-| `ALT + I` | **Toggle scroll inhibition** — when enabled, the view will NOT auto-scroll when focusing windows. Useful for keeping a fixed viewport. |
+| `ALT + I` | **Toggle follow-focus** — when ON, the view auto-scrolls to follow the focused window (makes Alt+Tab jump around the strip). When OFF (default), the view stays put and you scroll manually. |
 
 ### Clipboard
 
