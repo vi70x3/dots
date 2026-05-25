@@ -1,7 +1,7 @@
 # Hyprland + vibe-panel + nwg-dock & nwg-drawer
 <img width="1920" height="1080" alt="20260525_051302" src="https://github.com/user-attachments/assets/9e14c521-a420-4849-9a4d-890293387efc" />
 
-Hyprland + ecosystem dotfiles. Built around a **scrolling layout**.
+Hyprland + ecosystem dotfiles. Built around a **scrolling layout** with familiar Alt+Tab flow.
 
 ## Structure
 
@@ -36,7 +36,6 @@ scripts/
 All nwg-* tools run standalone — no nwg-shell session or dependencies required.
 
 ## Install
-
 ```bash
 # Hyprland config
 cp -r hypr/* ~/.config/hypr/
@@ -44,9 +43,35 @@ cp -r hypr/* ~/.config/hypr/
 # Clipboard tray
 cp scripts/clipboard-tray ~/.local/bin/
 chmod +x ~/.local/bin/clipboard-tray
+```
+### for nwg-hello (optional login manager)
+> [!TIP]
+>nwg-hello is a GTK3-based native hypeland greeter for greetd. It handles the login screen before your Hyprland session starts.
 
-# nwg-hello greeter config (requires root)
+```bash
+# 1. Install greetd and nwg-hello
+#    (AUR: greetd, nwg-hello)
+
+# 2. Copy config files
 sudo cp -r nwg-hello/* /etc/nwg-hello/
+
+# 3. Configure greetd to use nwg-hello
+sudo tee /etc/greetd/config.toml << 'EOF'
+[terminal]
+vt = 1
+
+[default_session]
+command = "/usr/bin/start-hyprland -- -c /etc/nwg-hello/hyprland.conf"
+user = "greeter"
+EOF
+
+# 4. Enable greetd
+sudo systemctl enable greetd.service
+
+# 5. How it works
+# - greetd runs nwg-hello as the greeter on VT1
+# - nwg-hello launches a minimal Hyprland session (`/etc/nwg-hello/hyprland.conf`)
+# - On successful login, nwg-hello execs your real session and Hyprland exits
 ```
 
 ## Requirements
@@ -70,45 +95,6 @@ sudo cp -r nwg-hello/* /etc/nwg-hello/
 - **hyprshutdown** — shutdown menu (optional, falls back to `hyprctl dispatch exit`)
 
 ---
-
-## Login Manager (nwg-hello)
-
-nwg-hello is a GTK3-based greeter for greetd. It handles the login screen before your Hyprland session starts.
-
-### How it works
-
-1. greetd runs nwg-hello as the greeter on VT1
-2. nwg-hello launches a minimal Hyprland session (`/etc/nwg-hello/hyprland.conf`)
-3. On successful login, nwg-hello execs your real session and Hyprland exits
-
-### Initial setup
-
-```bash
-# 1. Install greetd and nwg-hello
-#    (AUR: greetd, nwg-hello)
-
-# 2. Copy config files
-sudo cp -r nwg-hello/* /etc/nwg-hello/
-
-# 3. Configure greetd to use nwg-hello
-sudo tee /etc/greetd/config.toml << 'EOF'
-[terminal]
-vt = 1
-
-[default_session]
-command = "/usr/bin/start-hyprland -- -c /etc/nwg-hello/hyprland.conf"
-user = "greeter"
-EOF
-
-# 4. Enable greetd
-sudo systemctl enable greetd.service
-```
-
-> **Tip:** During greetd package upgrades, `config.toml` may be overwritten. To avoid this, copy it to `greetd.conf` instead — greetd looks for that file first:
-> ```bash
-> sudo cp /etc/greetd/config.toml /etc/greetd/greetd.conf
-> ```
-
 
 ## Keybinds Reference
 
