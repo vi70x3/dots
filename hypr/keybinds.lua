@@ -40,9 +40,6 @@ end)
 -- ── Launcher ─────────────────────────────────────────────────
 hl.bind("SUPER + SUPER_L", hl.dsp.exec_cmd("nwg-drawer"))
 
--- ── Clipboard manager (Ctrl+Shift+V) ─────────────────────────
-hl.bind("CTRL + SHIFT + V", hl.dsp.exec_cmd("cliphist list | wofi --dmenu | cliphist decode | wl-copy"))
-
 -- ── Screenshots ──────────────────────────────────────────────
 -- Print: full screen
 hl.bind("Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"))
