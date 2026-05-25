@@ -1,7 +1,12 @@
 # Hyprland + vibe-panel + nwg-dock & nwg-drawer
+
 <img width="1920" height="1080" alt="20260525_051302" src="https://github.com/user-attachments/assets/9e14c521-a420-4849-9a4d-890293387efc" />
 
-Hyprland + ecosystem dotfiles. Built around a **scrolling layout** with familiar Alt+Tab flow.
+#### Hyprland + ecosystem dotfiles. Built around a **scrolling layout** with familiar Alt+Tab flow.
+
+
+> [!TIP]
+>For live wallpaper check https://github.com/vi70x3/glpaper
 
 ## Structure
 
@@ -46,7 +51,7 @@ chmod +x ~/.local/bin/clipboard-tray
 ```
 ### for nwg-hello (optional login manager)
 > [!TIP]
->nwg-hello is a GTK3-based native hypeland greeter for greetd. It handles the login screen before your Hyprland session starts.
+>nwg-hello is a GTK3-based native hyprland greeter for greetd. It handles the login screen before your Hyprland session starts.
 
 ```bash
 # 1. Install greetd and nwg-hello
