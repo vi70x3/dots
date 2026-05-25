@@ -29,9 +29,13 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("gtklock"))
 hl.bind("ALT + Tab", function()
     hl.dispatch(hl.dsp.window.cycle_next())
     hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top" }))
+    hl.dispatch(hl.dsp.layout("fit active"))
 end)
 
-hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next({ next = false }))
+hl.bind("ALT + SHIFT + Tab", function()
+    hl.dispatch(hl.dsp.window.cycle_next({ next = false }))
+    hl.dispatch(hl.dsp.layout("fit active"))
+end)
 
 -- ── Launcher ─────────────────────────────────────────────────
 hl.bind("SUPER + SUPER_L", hl.dsp.exec_cmd("nwg-drawer"))
