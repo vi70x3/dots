@@ -19,7 +19,7 @@ hl.config({
             inactive_border = "rgba(595959aa)",
         },
 
-        layout = "dwindle",
+        layout = "scrolling",
 
         extend_border_grab_area = true,
         hover_icon_on_border   = true,
@@ -103,6 +103,20 @@ hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 6, bezier =
 hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 7,    bezier = "quick" })
 
 -- ── Layouts ──────────────────────────────────────────────────
+hl.config({
+    scrolling = {
+        fullscreen_on_one_column = true,
+        column_width             = 0.5,
+        focus_fit_method         = 1,
+        follow_focus             = true,
+        follow_min_visible       = 0.4,
+        explicit_column_widths   = "0.333, 0.5, 0.667, 1.0",
+        wrap_focus               = true,
+        wrap_swapcol             = true,
+        direction                = "right",
+    },
+})
+
 hl.config({
     dwindle = {
         force_split          = 0,

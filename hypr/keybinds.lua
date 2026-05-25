@@ -47,6 +47,44 @@ hl.bind("SHIFT + Print", hl.dsp.exec_cmd("grim -g \"$(slurp)\" ~/Pictures/Screen
 -- Ctrl+Print: active window
 hl.bind("CTRL + Print", hl.dsp.exec_cmd("grim -g \"$(hyprctl activewindow -j | jq -r '\"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])'\")\" ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"))
 
+-- ── Scrolling layout navigation ───────────────────────────────
+-- Move focus left/right between columns
+hl.bind(mainMod .. " + Left",  hl.dsp.layout("focus l"))
+hl.bind(mainMod .. " + Right", hl.dsp.layout("focus r"))
+
+-- Swap current column with neighbor
+hl.bind(mainMod .. " + SHIFT + Left",  hl.dsp.layout("swapcol l"))
+hl.bind(mainMod .. " + SHIFT + Right", hl.dsp.layout("swapcol r"))
+
+-- Move view by columns
+hl.bind(mainMod .. " + comma",  hl.dsp.layout("move -col"))
+hl.bind(mainMod .. " + period", hl.dsp.layout("move +col"))
+
+-- Resize current column
+hl.bind(mainMod .. " + R + Left",  hl.dsp.layout("colresize -0.1"))
+hl.bind(mainMod .. " + R + Right", hl.dsp.layout("colresize +0.1"))
+
+-- Cycle through preset column widths
+hl.bind(mainMod .. " + bracketleft",  hl.dsp.layout("colresize -conf"))
+hl.bind(mainMod .. " + bracketright", hl.dsp.layout("colresize +conf"))
+
+-- Resize all columns at once
+hl.bind(mainMod .. " + R + A", hl.dsp.layout("colresize all 0.5"))
+
+-- Promote window to its own column
+hl.bind(mainMod .. " + P", hl.dsp.layout("promote"))
+
+-- Expel window to a dedicated column / consume into previous
+hl.bind(mainMod .. " + O", hl.dsp.layout("expel"))
+hl.bind(mainMod .. " + U", hl.dsp.layout("consume"))
+
+-- Fit operations
+hl.bind(mainMod .. " + Home", hl.dsp.layout("fit active"))
+hl.bind(mainMod .. " + End",  hl.dsp.layout("fit visible"))
+
+-- Toggle scroll inhibition
+hl.bind(mainMod .. " + I", hl.dsp.layout("inhibit_scroll"))
+
 -- ── Mouse window drag/resize ─────────────────────────────────
 hl.bind("ALT + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind("ALT + mouse:273", hl.dsp.window.resize(), { mouse = true })
