@@ -1,6 +1,7 @@
-# dots
+# Hyprland + vibe-panel + nwg-dock & nwg-drawer
+<img width="1920" height="1080" alt="20260525_051302" src="https://github.com/user-attachments/assets/9e14c521-a420-4849-9a4d-890293387efc" />
 
-Hyprland + ecosystem dotfiles. Built around a **scrolling layout** with vibepanel, nwg-dock-hyprland, and nwg-drawer — no nwg-shell dependency.
+Hyprland + ecosystem dotfiles. Built around a **scrolling layout**.
 
 ## Structure
 
@@ -15,9 +16,6 @@ nwg-hello/
   hyprland.conf         # Hyprland session config for the greeter
   nwg-hello.json        # Greeter config (sessions, themes, avatar, etc.)
   nwg-hello.css         # Greeter stylesheet
-swaync/
-  hyprland.json         # Swaync config (legacy, not used)
-  hyprland-1.css        # Swaync styles (legacy, not used)
 scripts/
   clipboard-tray        # Python GTK3 clipboard tray icon (cliphist)
 ```
@@ -111,37 +109,6 @@ sudo systemctl enable greetd.service
 > sudo cp /etc/greetd/config.toml /etc/greetd/greetd.conf
 > ```
 
-### nwg-hello.json
-
-Key configuration values:
-
-| Key | Description |
-|---|---|
-| `session_dirs` | Paths to session files (default: wayland-sessions + xsessions) |
-| `custom_sessions` | Add custom sessions (e.g. Shell → `/usr/bin/bash`) |
-| `gtk-theme` | GTK theme for the greeter |
-| `prefer-dark-theme` | Use dark variant of the theme |
-| `time-format` | Clock format (strftime) |
-| `date-format` | Date format (strftime) |
-| `avatar-show` | Display user profile picture |
-| `avatar-circle` | Draw avatar as a circle |
-| `env-vars` | Environment variables to pass to the session |
-
-### nwg-hello.css
-
-Copy the default stylesheet and customize:
-
-```bash
-sudo cp /etc/nwg-hello/nwg-hello-default.css /etc/nwg-hello/nwg-hello.css
-```
-
-Edit `/etc/nwg-hello/nwg-hello.css` to change colors, fonts, background, etc.
-
-### User avatars
-
-Avatars are loaded from `/var/lib/AccountsService/icons/$USERNAME`. Use **gnome-control-center** or **mugshot** to set your profile picture.
-
----
 
 ## Keybinds Reference
 
@@ -253,3 +220,36 @@ The **clipboard-tray** icon sits in the system tray (powered by vibepanel). Left
 |---|---|
 | `ALT + Left-click drag` | **Move** the window under the cursor. |
 | `ALT + Right-click drag` | **Resize** the window under the cursor. |
+
+### nwg-hello.json
+
+Key configuration values:
+
+| Key | Description |
+|---|---|
+| `session_dirs` | Paths to session files (default: wayland-sessions + xsessions) |
+| `custom_sessions` | Add custom sessions (e.g. Shell → `/usr/bin/bash`) |
+| `gtk-theme` | GTK theme for the greeter |
+| `prefer-dark-theme` | Use dark variant of the theme |
+| `time-format` | Clock format (strftime) |
+| `date-format` | Date format (strftime) |
+| `avatar-show` | Display user profile picture |
+| `avatar-circle` | Draw avatar as a circle |
+| `env-vars` | Environment variables to pass to the session |
+
+### nwg-hello.css
+
+Copy the default stylesheet and customize:
+
+```bash
+sudo cp /etc/nwg-hello/nwg-hello-default.css /etc/nwg-hello/nwg-hello.css
+```
+
+Edit `/etc/nwg-hello/nwg-hello.css` to change colors, fonts, background, etc.
+
+### User avatars
+
+Avatars are loaded from `/var/lib/AccountsService/icons/$USERNAME`. Use **gnome-control-center** or **mugshot** to set your profile picture.
+
+---
+
