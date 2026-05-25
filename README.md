@@ -105,16 +105,16 @@ chmod +x ~/.local/bin/clipboard-tray
 
 ### Scrolling Layout Navigation
 
-The layout is set to **scrolling** — windows are arranged in columns on an infinitely growing horizontal strip. These keybinds let you navigate and manipulate columns.
+The layout is set to **scrolling** — windows are arranged in columns on an infinitely growing horizontal strip. Think of it as a familiar Alt+Tab window switcher, but the windows stay where you put them and you pan across them horizontally. This is the core philosophy: windows don't resize or tile themselves unexpectedly, they just sit in columns the way you'd arrange them on a wide virtual desktop.
 
-**Default behavior:** `follow_focus` is **off** — focusing a window (via Alt+Tab, Alt+Left/Right, etc.) does NOT auto-scroll the view. This keeps Alt+Tab and other focus workflows stable. Press `ALT + I` to toggle follow-focus on when you want the view to track the focused window.
+**How it works:** `follow_focus` is **off** by default. The view stays where you left it — focusing a window with Alt+Tab or arrow keys moves focus but doesn't yank the camera around. Alt+Tab scrolls the view to the newly focused window so you always see what you switched to, but moving focus with Left/Right keeps the view put. Press `ALT + I` to toggle follow-focus on if you prefer the view to always track the focused window.
 
 #### Focus & Navigation
 
 | Keybind | Action |
 |---|---|
-| `ALT + Left` | Move focus to the column on the **left**. Wraps around at the edges. View does NOT auto-scroll by default. |
-| `ALT + Right` | Move focus to the column on the **right**. Wraps around at the edges. View does NOT auto-scroll by default. |
+| `ALT + Left` | Move focus to the column on the **left**. Wraps around at the edges. |
+| `ALT + Right` | Move focus to the column on the **right**. Wraps around at the edges. |
 | `ALT + ,` (comma) | **Scroll the view left** by one column (shifts the visible area without changing focus). |
 | `ALT + .` (period) | **Scroll the view right** by one column (shifts the visible area without changing focus). |
 
@@ -149,7 +149,7 @@ The layout is set to **scrolling** — windows are arranged in columns on an inf
 |---|---|
 | `ALT + Home` | **Fit active** — scroll the view so the focused window's column is fully visible and centered. |
 | `ALT + End` | **Fit visible** — scroll the view to show as many columns as possible on screen. |
-| `ALT + I` | **Toggle follow-focus** — when ON, the view auto-scrolls to follow the focused window (makes Alt+Tab jump around the strip). When OFF (default), the view stays put and you scroll manually. |
+| `ALT + I` | **Toggle follow-focus** — when ON, the view auto-scrolls to any focused window (including arrow-key navigation). When OFF (default), the view stays put and you scroll manually. |
 
 ### Clipboard
 
