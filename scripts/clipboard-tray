@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""
+Clipboard tray icon using GTK3 + StatusNotifierItem (AppIndicator-style).
+Shows cliphist entries in a popup menu on click.
+"""
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gtk, Gdk, GLib, Gio
+import subprocess
+import os
+import signal
+
+class ClipboardTray:
+    def __init__(self):
+        # Create a status icon (fallback) or use DBus StatusNotifier
+        self.icon = Gtk.StatusIcon()
+        self.icon.set_from_icon_name("edit-paste")
+        self.icon.set_tooltip_text("Clipboard Manager (cliphist)")
+        self.icon.connect("popup-menu", self.on_popup_menu)
+        self.icon.connect("activate", self.on_activate)
+
+    def get_cliphist_list(self):
+        """Get list of clipboard entries from cliphist."""
+        try:
+            result = subprocess.run(
+                ["cliphist", "list"],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode == 0:
+                return result.stdout.strip().split('\n')[:20]  # Top 20
+        except Exception as e:
+            print(f"Error getting cliphist: {e}")
+        return []
+
+    def decode_and_copy(self, entry_id):
+        """Decode a cliphist entry and copy to clipboard."""
+        try:
+            decoded = subprocess.run(
+                ["cliphist", "decode", entry_id],
+                capture_output=True, timeout=5
+            )
+            if decoded.returncode == 0:
+                copy = subprocess.run(
+                    ["wl-copy"],
+                    input=decoded.stdout,
+                    timeout=5
+                )
+        except Exception as e:
+            print(f"Error decoding: {e}")
+
+    def clear_history(self):
+        """Clear all clipboard history."""
+        try:
+            subprocess.run(["cliphist", "wipe"], timeout=5)
+        except Exception as e:
+            print(f"Error wiping: {e}")
+
+    def on_popup_menu(self, icon, button, time):
+        """Build and show the popup menu."""
+        menu = Gtk.Menu()
+
+        # Title
+        title_item = Gtk.MenuItem(label="📋 Clipboard History")
+        title_item.set_sensitive(False)
+        menu.append(title_item)
+
+        sep = Gtk.SeparatorMenuItem()
+        menu.append(sep)
+
+        # Get clipboard entries
+        entries = self.get_cliphist_list()
+
+        if entries and entries[0]:
+            for entry in entries:
+                # Truncate long entries for display
+                display = entry.replace('\n', ' ')[:60]
+                if len(entry.replace('\n', ' ')) > 60:
+                    display += "…"
+
+                item = Gtk.MenuItem(label=display)
+                # Store the full entry text for callback
+                item.entry_text = entry
+                item.connect("activate", lambda w: self.decode_and_copy(w.entry_text))
+                menu.append(item)
+        else:
+            empty_item = Gtk.MenuItem(label="(empty)")
+            empty_item.set_sensitive(False)
+            menu.append(empty_item)
+
+        sep2 = Gtk.SeparatorMenuItem()
+        menu.append(sep2)
+
+        # Clear history
+        clear_item = Gtk.MenuItem(label="🗑 Clear History")
+        clear_item.connect("activate", lambda w: self.clear_history())
+        menu.append(clear_item)
+
+        # Quit
+        quit_item = Gtk.MenuItem(label="✕ Quit Tray")
+        quit_item.connect("activate", lambda w: Gtk.main_quit())
+        menu.append(quit_item)
+
+        menu.show_all()
+        menu.popup(None, None, Gtk.StatusIcon.position_menu, icon, button, time)
+
+    def on_activate(self, icon):
+        """Left-click: open wofi clipboard picker."""
+        try:
+            # Use wofi for a nice picker
+            subprocess.Popen(
+                "cliphist list | wofi --dmenu | cliphist decode | wl-copy",
+                shell=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
+            )
+        except Exception:
+            # Fallback to popup menu
+            self.on_popup_menu(icon, 1, Gtk.get_current_event_time())
+
+def main():
+    # Handle SIGTERM gracefully
+    signal.signal(signal.SIGTERM, lambda s, f: Gtk.main_quit())
+    signal.signal(signal.SIGINT, lambda s, f: Gtk.main_quit())
+
+    tray = ClipboardTray()
+    Gtk.main()
+
+if __name__ == "__main__":
+    main()
