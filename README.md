@@ -1,6 +1,6 @@
 # dots
 
-Hyprland + ecosystem dotfiles.
+Hyprland + ecosystem dotfiles. Built around a **scrolling layout** with vibepanel, nwg-dock-hyprland, and nwg-drawer — no nwg-shell dependency.
 
 ## Structure
 
@@ -12,20 +12,31 @@ hypr/
   window_rules.lua      # Window rules module
   layer_rules.lua       # Layer rules module
 swaync/
-  hyprland.json         # Swaync config
-  hyprland-1.css        # Swaync styles
+  hyprland.json         # Swaync config (legacy, not used)
+  hyprland-1.css        # Swaync styles (legacy, not used)
 scripts/
   clipboard-tray        # Python GTK3 clipboard tray icon (cliphist)
 ```
+
+## Stack
+
+| Component | Role |
+|---|---|
+| **Hyprland** (0.55+ git) | Wayland compositor, Lua config |
+| **vibepanel** | Top panel (clock, system tray, etc.) |
+| **nwg-dock-hyprland** | Bottom dock, overlay positioning |
+| **nwg-drawer** | App drawer / launcher (Super key) |
+| **glpaper** | Animated shader wallpaper (systemd user service) |
+| **cliphist** + **clipboard-tray** | Clipboard manager with tray icon |
+| **wlsunset** | Blue light filter (4500K–6500K) |
+
+All three nwg-* tools run standalone — no nwg-shell session or dependencies required.
 
 ## Install
 
 ```bash
 # Hyprland config
 cp -r hypr/* ~/.config/hypr/
-
-# Swaync config
-cp -r swaync/* ~/.config/swaync/
 
 # Clipboard tray
 cp scripts/clipboard-tray ~/.local/bin/
@@ -34,15 +45,21 @@ chmod +x ~/.local/bin/clipboard-tray
 
 ## Requirements
 
-- Hyprland 0.55+ (AUR `hyprland-git`)
-- `cliphist`, `wl-clipboard` — clipboard manager
-- `grim`, `slurp` — screenshots
-- `wofi` — app launcher / clipboard picker
-- `nwg-dock-hyprland`, `nwg-drawer` — dock and drawer
-- `vibepanel` — panel
-- `swaync` — notifications
-- `wlsunset` — blue light filter
-- `glpaper` — shader wallpaper (systemd user service)
+- **Hyprland** 0.55+ (AUR `hyprland-git`)
+- **vibepanel** — panel
+- **nwg-dock-hyprland** — dock
+- **nwg-drawer** — app drawer / launcher
+- **glpaper** — shader wallpaper (systemd user service)
+- **cliphist**, **wl-clipboard** — clipboard manager
+- **grim**, **slurp** — screenshots
+- **wofi** — clipboard picker (Ctrl+Shift+V)
+- **wlsunset** — blue light filter
+- **alacritty** — terminal
+- **codium** — editor
+- **floorp** — browser
+- **nautilus** — file manager
+- **gtklock** — screen lock
+- **hyprshutdown** — shutdown menu (optional, falls back to `hyprctl dispatch exit`)
 
 ---
 
@@ -52,7 +69,7 @@ chmod +x ~/.local/bin/clipboard-tray
 
 ### Workspaces
 
-Hyprland uses 12 named workspaces (A–L). Switch and move windows between them using the number row keys.
+12 named workspaces (A–L). Switch and move windows using the number row.
 
 | Keybind | Action |
 |---|---|
@@ -60,10 +77,10 @@ Hyprland uses 12 named workspaces (A–L). Switch and move windows between them 
 | `ALT + 0` | Switch to workspace **J** |
 | `ALT + -` | Switch to workspace **K** |
 | `ALT + =` | Switch to workspace **L** |
-| `ALT + SHIFT + 1`–`9` | Move active window to workspace **A**–**I** and follow it |
-| `ALT + SHIFT + 0` | Move active window to workspace **J** and follow it |
-| `ALT + SHIFT + -` | Move active window to workspace **K** and follow it |
-| `ALT + SHIFT + =` | Move active window to workspace **L** and follow it |
+| `ALT + SHIFT + 1`–`9` | Move active window to workspace **A**–**I** and follow |
+| `ALT + SHIFT + 0` | Move active window to workspace **J** and follow |
+| `ALT + SHIFT + -` | Move active window to workspace **K** and follow |
+| `ALT + SHIFT + =` | Move active window to workspace **L** and follow |
 
 ### Application Launchers
 
@@ -137,6 +154,8 @@ The layout is set to **scrolling** — windows are arranged in columns on an inf
 | Keybind | Action |
 |---|---|
 | `CTRL + SHIFT + V` | Open clipboard history picker (**wofi** + **cliphist**). Select an entry to paste it. |
+
+The **clipboard-tray** icon sits in the system tray (powered by vibepanel). Left-click it to open the wofi picker, right-click for a menu of recent entries.
 
 ### Screenshots
 
