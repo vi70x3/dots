@@ -8,6 +8,9 @@
 > [!TIP]
 >For live wallpaper check https://github.com/vi70x3/glpaper
 
+> [!INFO]
+Dock is currenly non-functional probably due to how config handles expanding windows on Alt+Tab, it selects window but doesn't scroll to it.
+
 ## Structure
 
 ```
