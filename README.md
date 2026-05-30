@@ -2,13 +2,13 @@
 
 <img width="1920" height="1080" alt="20260525_051302" src="https://github.com/user-attachments/assets/9e14c521-a420-4849-9a4d-890293387efc" />
 
-This repository contains dotfiles for a Hyprland desktop environment built around a horizontal scrolling layout and a traditional Alt+Tab window cycling flow.
+This repository contains dotfiles for a Hyprland desktop environment built around a horizontal scrolling layout and a traditional `Alt`+`Tab` window cycling flow that will expand your windows to fullscreen or `Alt`+`<-` / `Alt`+`->` that will keep your window width and just switch between them.
 
 > [!TIP]
 > To configure animated shader wallpapers, see [glpaper](https://github.com/vi70x3/glpaper).
 
 > [!IMPORTANT]
-> **Known Issue:** The dock is currently not fully functional. This behavior is likely due to the way the configuration handles window expansion during Alt+Tab, where the target window is focused but the viewport does not automatically scroll to center it.
+> **Known Issue:** The dock is currently not stable. This behavior is likely due to the way the configuration handles window expansion during Alt+Tab, where the target window is sometimes focused but the viewport does not automatically scroll to center it.
 
 ---
 
