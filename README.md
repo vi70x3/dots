@@ -2,7 +2,7 @@
 
 <img width="1920" height="1080" alt="20260525_051302" src="https://github.com/user-attachments/assets/9e14c521-a420-4849-9a4d-890293387efc" />
 
-This repository contains dotfiles for a Hyprland desktop environment built around a horizontal scrolling layout and a traditional `Alt`+`Tab` window cycling flow that will expand your windows to fullscreen or `Alt`+`<-` / `Alt`+`->` that will keep your window width and just switch between them.
+This repository contains dotfiles for a Hyprland desktop environment built around a horizontal scrolling layout and a traditional `Alt`+`Tab` window cycling flow that will expand your windows to fullscreen or `Alt`+`<-` / `Alt`+`->` that will keep your window width and just switch between them. You can also resize windows with `Alt`+`RMB` and switch between windows with `Alt`+`LMB`, it works even on edges!
 
 > [!TIP]
 > To configure animated shader wallpapers, see [glpaper](https://github.com/vi70x3/glpaper).
