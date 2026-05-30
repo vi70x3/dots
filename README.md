@@ -223,6 +223,7 @@ This setup utilizes a horizontal scrolling layout. Windows are organized side-by
 |---|---|
 | `ALT + Left-click drag` | Move the window under the cursor |
 | `ALT + Right-click drag` | Resize the window under the cursor |
+| `ALT + Click on screen edge` | Switch to the next window (cycles through windows) |
 
 ---
 
